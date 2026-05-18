@@ -50,11 +50,10 @@ pipeline {
 
                 junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
             }
-            post {
-                always {
-                    junit 'test-results.xml'
-                }
-            }
         }
+
+        stage('Code Coverage) {
+                sh 'npm run coverage
+            }
     }
 }
