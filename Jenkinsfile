@@ -8,8 +8,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'node -v'
-                sh 'npm -v'
                 sh 'npm install'
             }
         }
@@ -54,15 +52,14 @@ pipeline {
                 }
             }
         }
+    }
 
-        post {
-            always {
-                junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
-                junit allowEmptyResults: true, keepProperties: true, testResults: 'dependency-check-junit.xml'
-                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-
-            }
+    post {
+        always {
+            junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
+            junit allowEmptyResults: true, keepProperties: true, testResults: 'dependency-check-junit.xml'
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
