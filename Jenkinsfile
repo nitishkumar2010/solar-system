@@ -52,8 +52,10 @@ pipeline {
             }
         }
 
-        stage('Code Coverage) {
-                sh 'npm run coverage
+        stage('Code Coverage') {
+            steps {
+                sh 'npm run coverage'
             }
+        }
     }
 }
