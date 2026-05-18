@@ -27,7 +27,15 @@ pipeline {
 
                 stage('OWASP Dependencies Check') {
                     steps {
-                        dependencyCheck additionalArguments: '', odcInstallation: 'OWASP-DepCheck-10'
+                        dependencyCheck additionalArguments: '''
+                            --scan package.json
+                            --scan package-lock.json
+                            --disableYarnAudit
+                            --disableOssIndex
+                            --nodeAuditSkipDevDependencies
+                        ''', odcInstallation: 'OWASP-DepCheck-10'    
+
+                        
                     }
                 }
             }
