@@ -36,9 +36,6 @@ pipeline {
                             --format ALL
                         ''', odcInstallation: 'OWASP-DepCheck-10'
 
-                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-
-                        junit allowEmptyResults: true, keepProperties: true, testResults: 'dependency-check-junit.xml'
                     }
                 }
             }
@@ -47,8 +44,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'npm test'
-
-                junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
             }
         }
 
@@ -57,8 +52,15 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', message: 'Err! This will be fixed in the future releases', stageResult: 'UNSTABLE') {
                      sh 'npm run coverage'
                 }
+            }
+        }
 
+        post {
+            always {
+                junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
+                junit allowEmptyResults: true, keepProperties: true, testResults: 'dependency-check-junit.xml'
                 publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-jenkins.html', reportName: 'Dependency Check HTML Report', reportTitles: '', useWrapperFileDirectly: true])
 
             }
         }
