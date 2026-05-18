@@ -33,8 +33,8 @@ pipeline {
                             --disableYarnAudit
                             --disableOssIndex
                             --nodeAuditSkipDevDependencies
-                        ''', odcInstallation: 'OWASP-DepCheck-10'    
-
+                            --format ALL
+                        ''', odcInstallation: 'OWASP-DepCheck-10'
                         
                     }
                 }
