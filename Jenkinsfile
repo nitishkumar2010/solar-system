@@ -47,6 +47,8 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'npm test'
+
+                junit allowEmptyResults: true, keepProperties: true, testResults: 'test-results.xml'
             }
             post {
                 always {
