@@ -44,7 +44,7 @@ pipeline {
                 }
             }
           }
-
+     
         stage('Test') {
             steps {
                 sh 'npm test'
@@ -64,7 +64,14 @@ pipeline {
                 sh 'printenv'
                 sh 'docker build -t nitishk21/solar-system:$GIT_COMMIT .'
             }
+        }
 
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-creds', url: '') {
+                    sh 'docker push nitishk21/solar-system:$GIT_COMMIT'
+                }
+            }
         }
     }
 
