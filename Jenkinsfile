@@ -76,6 +76,28 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy - AWS EC2') {
+            when {
+                branch 'feature/*'
+            }
+            steps {
+                script {
+                        sshagent(['aws-dev-deploy-ec2-instance']) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ec2-user@<EC2_PUBLIC_IP> "
+                                    if sudo docker ps -a | grep -q 'solar-system'; then
+                                        echo 'Stopping and removing existing solar-system container...'
+                                        sudo docker stop solar-system || true && sudo docker rm solar-system || true
+                                    fi
+                                        sudo docker run --name solar-system\
+                                        -p 3001:3001 -d nitishk21/solar-system:$GIT_COMMIT
+                                "
+                            '''
+                        }
+                }
+            }
+        }
     }
 
     post {
