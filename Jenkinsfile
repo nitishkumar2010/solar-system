@@ -5,6 +5,10 @@ pipeline {
         nodejs 'nodejs-25-8-0'
     }
 
+    environment {
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
+    }
+
     stages {
         stage('Build') {
             steps {
