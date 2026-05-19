@@ -8,6 +8,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'node -v'
+                sh 'npm -v'
                 sh 'npm install'
             }
         }
@@ -51,6 +53,13 @@ pipeline {
                      sh 'npm run coverage'
                 }
             }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'printenv'
+                sh 'docker build -t nitishk21/solar-system:$GIT_COMMIT .'
+            }
+
         }
     }
 
